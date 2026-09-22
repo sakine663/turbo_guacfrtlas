@@ -27,4 +27,5 @@ jobs:
           git config --global user.email "bot@users.noreply.github.com"
           git add streams3/*.m3u8
           git commit -m "Auto update streams" || echo "No changes"
+          git pull origin main --rebase || echo "No rebase needed"
           git push
