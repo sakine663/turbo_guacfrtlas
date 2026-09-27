@@ -1,5 +1,5 @@
 {
-  "timestamp": 1790523840798,
+  "timestamp": 1790537326723,
   "success": true,
   "workingDomain": "https://taraftarium1083.xyz",
   "baseUrl": "https://2i4.d72577a9dd0ec71.cfd/",
@@ -79,14 +79,14 @@
     {
       "name": "t1",
       "url": "https://2i4.d72577a9dd0ec71.cfd/t1/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "t2",
       "url": "https://2i4.d72577a9dd0ec71.cfd/t2/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "t3",
@@ -121,8 +121,8 @@
     {
       "name": "trtspor2",
       "url": "https://2i4.d72577a9dd0ec71.cfd/trtspor2/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "trt1",
@@ -187,26 +187,26 @@
     {
       "name": "ex4",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex4/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ex5",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex5/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ex6",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex6/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ex7",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex7/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ex8",
@@ -217,14 +217,14 @@
     {
       "name": "eu1",
       "url": "https://2i4.d72577a9dd0ec71.cfd/eu1/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "eu2",
       "url": "https://2i4.d72577a9dd0ec71.cfd/eu2/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     }
   ],
   "error": null
