@@ -1,5 +1,5 @@
 {
-  "timestamp": 1791412508097,
+  "timestamp": 1791426321266,
   "success": true,
   "workingDomain": "https://taraftarium1084.xyz",
   "baseUrl": "https://2i4.d72577a9dd0ec71.cfd/",
@@ -67,38 +67,38 @@
     {
       "name": "ss",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ss/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "ss2",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ss2/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "t1",
       "url": "https://2i4.d72577a9dd0ec71.cfd/t1/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "t2",
       "url": "https://2i4.d72577a9dd0ec71.cfd/t2/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "t3",
       "url": "https://2i4.d72577a9dd0ec71.cfd/t3/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "t4",
       "url": "https://2i4.d72577a9dd0ec71.cfd/t4/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "smarts",
@@ -145,8 +145,8 @@
     {
       "name": "tv8",
       "url": "https://2i4.d72577a9dd0ec71.cfd/tv8/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "tv85",
@@ -181,32 +181,32 @@
     {
       "name": "ex3",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex3/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "ex4",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex4/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "ex5",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex5/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "ex6",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex6/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "ex7",
       "url": "https://2i4.d72577a9dd0ec71.cfd/ex7/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "ex8",
@@ -217,8 +217,8 @@
     {
       "name": "eu1",
       "url": "https://2i4.d72577a9dd0ec71.cfd/eu1/mono.m3u8",
-      "valid": true,
-      "error": null
+      "valid": false,
+      "error": "Validation failed"
     },
     {
       "name": "eu2",
