@@ -1,5 +1,5 @@
 {
-  "timestamp": 1792896987195,
+  "timestamp": 1792915677437,
   "success": true,
   "workingDomain": "https://taraftarium1087.xyz",
   "baseUrl": "https://g1b.d72577a9dd0ec74.cfd/",
@@ -67,32 +67,32 @@
     {
       "name": "ss",
       "url": "https://g1b.d72577a9dd0ec74.cfd/ss/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ss2",
       "url": "https://g1b.d72577a9dd0ec74.cfd/ss2/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "t1",
       "url": "https://g1b.d72577a9dd0ec74.cfd/t1/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "t2",
       "url": "https://g1b.d72577a9dd0ec74.cfd/t2/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "t3",
       "url": "https://g1b.d72577a9dd0ec74.cfd/t3/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "t4",
@@ -169,8 +169,8 @@
     {
       "name": "ex1",
       "url": "https://g1b.d72577a9dd0ec74.cfd/ex1/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ex2",
@@ -181,8 +181,8 @@
     {
       "name": "ex3",
       "url": "https://g1b.d72577a9dd0ec74.cfd/ex3/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ex4",
@@ -193,14 +193,14 @@
     {
       "name": "ex5",
       "url": "https://g1b.d72577a9dd0ec74.cfd/ex5/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ex6",
       "url": "https://g1b.d72577a9dd0ec74.cfd/ex6/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "ex7",
@@ -217,14 +217,14 @@
     {
       "name": "eu1",
       "url": "https://g1b.d72577a9dd0ec74.cfd/eu1/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "eu2",
       "url": "https://g1b.d72577a9dd0ec74.cfd/eu2/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     }
   ],
   "error": null
