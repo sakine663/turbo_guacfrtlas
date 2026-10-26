@@ -1,5 +1,5 @@
 {
-  "timestamp": 1793040419308,
+  "timestamp": 1793055597171,
   "success": true,
   "workingDomain": "https://taraftarium1087.xyz",
   "baseUrl": "https://g1b.d72577a9dd0ec74.cfd/",
@@ -115,26 +115,26 @@
     {
       "name": "trtspor",
       "url": "https://g1b.d72577a9dd0ec74.cfd/trtspor/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "trtspor2",
       "url": "https://g1b.d72577a9dd0ec74.cfd/trtspor2/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "trt1",
       "url": "https://g1b.d72577a9dd0ec74.cfd/trt1/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "as",
       "url": "https://g1b.d72577a9dd0ec74.cfd/as/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "atv",
@@ -217,14 +217,14 @@
     {
       "name": "eu1",
       "url": "https://g1b.d72577a9dd0ec74.cfd/eu1/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     },
     {
       "name": "eu2",
       "url": "https://g1b.d72577a9dd0ec74.cfd/eu2/mono.m3u8",
-      "valid": false,
-      "error": "Validation failed"
+      "valid": true,
+      "error": null
     }
   ],
   "error": null
