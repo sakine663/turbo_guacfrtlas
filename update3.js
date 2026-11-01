@@ -23,55 +23,106 @@ async function fetchNoRedirect(url) {
 }
 
 async function getBaseDomain() {
-  const fallback = "https://atomsportv500.top";
+  const fallback = "https://atomsportv519.top";
+
+  let currentUrl = START_URL;
+  let referer = HEADERS.Referer;
 
   try {
-    const r1 = await fetchNoRedirect(START_URL);
-    const loc1 = r1.headers.get("location");
+    // Follow redirects manually so we can identify the failing URL.
+    for (let i = 0; i < 10; i++) {
+      console.log(`Requesting: ${currentUrl}`);
 
-    if (loc1) {
-      const r2 = await fetchNoRedirect(loc1);
-      const loc2 = r2.headers.get("location");
+      let response;
 
-      if (loc2) {
-        return loc2.trim().replace(/\/$/, "");
+      try {
+        response = await fetch(currentUrl, {
+          headers: {
+            ...HEADERS,
+            Referer: referer,
+          },
+          redirect: "manual",
+        });
+      } catch (e) {
+        const cause = e.cause;
+
+        throw new Error(
+          `Request failed at ${currentUrl}\n` +
+          `Cause: ${cause?.code ?? ""} ${cause?.message ?? e.message}`
+        );
       }
+
+      const location = response.headers.get("location");
+
+      if (
+        response.status >= 300 &&
+        response.status < 400 &&
+        location
+      ) {
+        referer = currentUrl;
+        currentUrl = new URL(location, currentUrl).href;
+        continue;
+      }
+
+      if (!response.ok) {
+        throw new Error(
+          `HTTP ${response.status} at ${currentUrl}`
+        );
+      }
+
+      const html = await response.text();
+
+      const match = html.match(
+        /fetch\s*\(\s*(["'])(https?:\/\/[^/"']+)\/load\/channels\.php(?:\?[^"']*)?\1\s*\)/i
+      );
+
+      if (match) {
+        console.log("Detected base domain:", match[2]);
+        return match[2];
+      }
+
+      console.warn(
+        `The expected fetch() pattern was not found in ${currentUrl}`
+      );
+
+      break;
     }
 
+    console.warn("Using fallback domain:", fallback);
     return fallback;
   } catch (e) {
+    console.error("Failed to detect base domain:", e.message);
+    console.warn("Using fallback domain:", fallback);
     return fallback;
   }
 }
 
 async function getChannelM3u8(channelId, baseDomain) {
   try {
-    const matchesUrl = `${baseDomain}/matches?id=${channelId}`;
+    const matchesUrl = `${baseDomain}/load/yayinlink.php?id=${channelId}`;
+    
+    const response = await fetch(matchesUrl, {
+      headers: HEADERS,
+    });
 
-    const r1 = await fetch(matchesUrl, { headers: HEADERS });
-    const text1 = await r1.text();
-
-    const fetchMatch = text1.match(/fetch\(\s*["'](.*?)["']/);
-    if (!fetchMatch) return null;
-
-    let fetchUrl = fetchMatch[1].trim();
-    if (!fetchUrl.endsWith(channelId)) {
-      fetchUrl += channelId;
+    if (!response.ok) {
+      console.warn(`${channelId}: HTTP ${response.status}`);
+      return null;
     }
 
-    const r2 = await fetch(fetchUrl, { headers: HEADERS });
-    const text2 = await r2.text();
+    const data = await response.json();
 
-    const m3u8Match = text2.match(
-      /"(?:stream|url|source|deismackanal)":\s*"(.*?\.m3u8|.*?)"/
-    );
-
-    if (m3u8Match) {
-      return m3u8Match[1].replace(/\\/g, "");
+    if (
+      typeof data.deismackanal === "string" &&
+      data.deismackanal.trim()
+    ) {
+      return data.deismackanal.trim();
     }
 
+    console.warn(`${channelId}: Missing deismackanal field`);
     return null;
   } catch (e) {
+    console.warn(`${channelId}: ${e.message}`);
     return null;
   }
 }
@@ -127,6 +178,8 @@ async function main() {
       fs.writeFileSync(filePath, `${M3U8_HEADER}\n${url}`);
 
       console.log(`Saved ${ch.id}`);
+    } else {
+      console.log(`No stream found for ${ch.id}`);
     }
   }
 
@@ -142,6 +195,8 @@ async function main() {
 
       console.log(`${tId}.m3u8 -> Stream: ${tId}.m3u8`);
     }
+  } else {
+    console.warn("No template stream found; skipping tabii streams.");
   }
 }
 
