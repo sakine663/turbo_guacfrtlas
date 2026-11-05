@@ -1,357 +1,164 @@
 import fs from "fs";
+import path from "path";
 
-const REDIRECT_URL = "https://taraftariumizle.org";
-const MAX_ATTEMPTS = 15;
-const USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
-const REFERER = `${REDIRECT_URL}/`
-const OUTPUT_DIR = "streams2";
+// SSL sertifika hatalarını yok say (Python'daki verify=False karşılığı)
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-const STREAM_SUFFIXES = [
-    { name: "androstreamlivebiraz1", path: `androstreamlivebiraz1.m3u8` },
-    { name: "androstreamlivebs1", path: `androstreamlivebs1.m3u8` },
-    { name: "androstreamlivebs2", path: `androstreamlivebs2.m3u8` },
-    { name: "androstreamlivebs3", path: `androstreamlivebs3.m3u8` },
-    { name: "androstreamlivebs4", path: `androstreamlivebs4.m3u8` },
-    { name: "androstreamlivebs5", path: `androstreamlivebs5.m3u8` },
-    { name: "androstreamlivebsm1", path: `androstreamlivebsm1.m3u8` },
-    { name: "androstreamlivebsm2", path: `androstreamlivebsm2.m3u8` },
-    { name: "androstreamlivess1", path: `androstreamlivess1.m3u8` },
-    { name: "androstreamlivess2", path: `androstreamlivess2.m3u8` },
-    { name: "androstreamlivessplus1", path: `androstreamlivessplus1.m3u8` },
-    { name: "androstreamlivets", path: `androstreamlivets.m3u8` },
-    { name: "androstreamlivets1", path: `androstreamlivets1.m3u8` },
-    { name: "androstreamlivets2", path: `androstreamlivets2.m3u8` },
-    { name: "androstreamlivets3", path: `androstreamlivets3.m3u8` },
-    { name: "androstreamlivets4", path: `androstreamlivets4.m3u8` },
-    { name: "androstreamlivesm1", path: `androstreamlivesm1.m3u8` },
-    { name: "androstreamlivesm2", path: `androstreamlivesm2.m3u8` },
-    { name: "androstreamlivees1", path: `androstreamlivees1.m3u8` },
-    { name: "androstreamlivees2", path: `androstreamlivees2.m3u8` },
-    { name: "androstreamliveidm", path: `androstreamliveidm.m3u8` },
-    { name: "androstreamlivetrt1", path: `androstreamlivetrt1.m3u8` },
-    { name: "androstreamlivetrts", path: `androstreamlivetrts.m3u8` },
-    { name: "androstreamlivetrtsy", path: `androstreamlivetrtsy.m3u8` },
-    { name: "androstreamliveatv", path: `androstreamliveatv.m3u8` },
-    { name: "androstreamliveas", path: `androstreamliveas.m3u8` },
-    { name: "androstreamlivea2", path: `androstreamlivea2.m3u8` },
-    { name: "androstreamlivetjk", path: `androstreamlivetjk.m3u8` },
-    { name: "androstreamliveht", path: `androstreamliveht.m3u8` },
-    { name: "androstreamlivenba", path: `androstreamlivenba.m3u8` },
-    { name: "androstreamlivetv8", path: `androstreamlivetv8.m3u8` },
-    { name: "androstreamlivetv85", path: `androstreamlivetv85.m3u8` },
-    { name: "androstreamlivetb", path: `androstreamlivetb.m3u8` },
-    { name: "androstreamlivetb1", path: `androstreamlivetb1.m3u8` },
-    { name: "androstreamlivetb2", path: `androstreamlivetb2.m3u8` },
-    { name: "androstreamlivetb3", path: `androstreamlivetb3.m3u8` },
-    { name: "androstreamlivetb4", path: `androstreamlivetb4.m3u8` },
-    { name: "androstreamlivetb5", path: `androstreamlivetb5.m3u8` },
-    { name: "androstreamlivetb6", path: `androstreamlivetb6.m3u8` },
-    { name: "androstreamlivetb7", path: `androstreamlivetb7.m3u8` },
-    { name: "androstreamlivetb8", path: `androstreamlivetb8.m3u8` },
-    { name: "androstreamlivefb", path: `androstreamlivefb.m3u8` },
-    { name: "androstreamlivecbcs", path: `androstreamlivecbcs.m3u8` },
-    { name: "androstreamlivegs", path: `androstreamlivegs.m3u8` },
-    { name: "androstreamlivesptstv", path: `androstreamlivesptstv.m3u8` },
-    { name: "androstreamliveexn", path: `androstreamliveexn.m3u8` },
-    { name: "androstreamliveexn1", path: `androstreamliveexn1.m3u8` },
-    { name: "androstreamliveexn2", path: `androstreamliveexn2.m3u8` },
-    { name: "androstreamliveexn3", path: `androstreamliveexn3.m3u8` },
-    { name: "androstreamliveexn4", path: `androstreamliveexn4.m3u8` },
-    { name: "androstreamliveexn5", path: `androstreamliveexn5.m3u8` },
-    { name: "androstreamliveexn6", path: `androstreamliveexn6.m3u8` },
-    { name: "androstreamliveexn7", path: `androstreamliveexn7.m3u8` },
-    { name: "androstreamliveexn8", path: `androstreamliveexn8.m3u8` }
-];
-
-const CONFIG_REGEX = /const\s+baseurls\s*=\s*\[(.*?)\]/is;
+const HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+};
 
 const M3U8_HEADER = `#EXTM3U
 #EXT-X-VERSION:3
 #EXT-X-STREAM-INF:BANDWIDTH=5500000,AVERAGE-BANDWIDTH=8976000,RESOLUTION=1920x1080,CODECS="avc1.640028,mp4a.40.2",FRAME-RATE=25`;
 
-function fetchWithTimeout(url, timeout = 8000) {
+const OUTPUT_FOLDER = "streams2";
+const BASE_PATTERN = "https://mahsunsports{}.xyz";
+
+const CHANNELS = [
+    "androstreamlivebiraz1", "androstreamlivebs1", "androstreamlivebs2", "androstreamlivebs3",
+    "androstreamlivebs4", "androstreamlivebs5", "androstreamlivebsm1", "androstreamlivebsm2",
+    "androstreamlivess1", "androstreamlivess2", "androstreamlivessplus1", "androstreamliveidm", "androstreamlivecbcs", "androstreamlivessplus2", "androstreamlivets", "androstreamlivets1",
+    "androstreamlivets2", "androstreamlivets3", "androstreamlivets4", "androstreamlivesm1",
+    "androstreamlivesm2", "androstreamlivees1", "androstreamlivees2", "androstreamlivetb",
+    "androstreamlivetb1", "androstreamlivetb2", "androstreamlivetb3", "androstreamlivetb4",
+    "androstreamlivetb5", "androstreamlivetb6", "androstreamlivetb7", "androstreamlivetb8",
+    "androstreamliveexn", "androstreamliveexn1", "androstreamliveexn2", "androstreamliveexn3",
+    "androstreamliveexn4", "androstreamliveexn5", "androstreamliveexn6", "androstreamliveexn7",
+    "androstreamliveexn8"
+];
+
+async function fetchWithTimeout(url, options = {}, timeout = 5000) {
     const controller = new AbortController();
     const id = setTimeout(() => controller.abort(), timeout);
-
-    return fetch(url, {
-        signal: controller.signal,
-        redirect: "follow",
-        headers: {
-            "User-Agent": USER_AGENT
-        }
-    })
-        .then(res => {
-            clearTimeout(id);
-            if (!res.ok) return null;
-            return res.text();
-        })
-        .catch(() => null);
-}
-
-function extractBaseUrl(html) {
-    const match = html.match(
-        /<link[^>]*hreflang=["']tr["'][^>]*href=["'](https?:\/\/[^"']+)["']/
-    );
-
-    if (!match) return null;
-
-    return match[1];
-}
-
-function extractAmpUrl(html) {
-    const match = html.match(
-        /src=["'](https?:\/\/[^"']*?)taraftariumizleorg\.js["']/
-    );
-
-    if (!match) return null;
-
-    return match[1];
-}
-
-async function resolveBaseDomain() {
-    console.log("Visiting main site:", REDIRECT_URL);
-
-    const html = await fetchWithTimeout(REDIRECT_URL);
-    if (!html) return null;
-
-    const baseUrl = extractBaseUrl(html);
-
-    console.log("Base URL found:", baseUrl);
-
-    return baseUrl;
-}
-
-async function resolveAmpDomain(url) {
-    console.log("Visiting amp site:", url);
-
-    const html = await fetchWithTimeout(url);
-    if (!html) return null;
-
-    const ampUrl = extractAmpUrl(html);
-
-    console.log("AMP URL found:", ampUrl);
-
-    return ampUrl;
-}
-
-function extractCurrentIframe(html) {
-    const match = html.match(
-        /<script\s+type=["']application\/json["']>\s*({[\s\S]*?})\s*<\/script>/i
-    );
-
-    if (!match) return null;
-
     try {
-        const json = JSON.parse(match[1]);
-        return json.currentIframe || null;
+        const response = await fetch(url, {
+            ...options,
+            signal: controller.signal
+        });
+        clearTimeout(id);
+        return response;
     } catch (err) {
-        console.log("JSON parse failed");
+        clearTimeout(id);
         return null;
     }
 }
 
-async function resolveRedirectChain(startUrl, maxDepth = 5) {
-    let currentUrl = startUrl;
-
-    for (let i = 0; i < maxDepth; i++) {
-        console.log("Resolving:", currentUrl);
-
-        const res = await fetch(currentUrl, {
-            redirect: "follow",
-            headers: { "User-Agent": USER_AGENT }
-        }).catch(() => null);
-
-        if (!res || !res.ok) return null;
-
-        // If HTTP redirect happened, fetch already followed it
-        let finalUrl = res.url;
-
-        const text = await res.text();
-
-        // 1️⃣ JS redirect (location.replace or window.location)
-        const jsMatch = text.match(/location\.replace\(["']([^"']+)["']\)/i)
-            || text.match(/window\.location\s*=\s*["']([^"']+)["']/i);
-
-        if (jsMatch) {
-            currentUrl = jsMatch[1];
-            continue;
-        }
-
-        // 2️⃣ Meta refresh redirect
-        const metaMatch = text.match(
-            /<meta[^>]+http-equiv=["']?refresh["']?[^>]+content=["'][^"']*url=([^"']+)["']/i
-        );
-
-        if (metaMatch) {
-            currentUrl = metaMatch[1];
-            continue;
-        }
-
-        // No more JS/meta redirect → return final origin
-        return new URL(finalUrl).origin;
-    }
-
-    return null;
-}
-
-async function findWorkingDomain() {
-    const candidates = [];
-
-    const lastKnown = loadLastDomain();
-    if (lastKnown) candidates.push(lastKnown);
-
-    candidates.push(REDIRECT_URL);
-
-    const match = REDIRECT_URL.match(/(\d+)/);
-    const startNumber = match ? parseInt(match[1]) : 1000;
-
-    for (let i = 0; i < MAX_ATTEMPTS; i++) {
-        const guess = BASE_PATTERN.replace("{num}", startNumber + i);
-        candidates.push(guess);
-    }
-
-    for (const domain of candidates) {
-        console.log("Testing domain:", domain);
-        const resolved = await resolveRedirectChain(REDIRECT_URL);
-        if (resolved) {
-            console.log("Resolved final domain:", resolved);
-            return resolved;
-        }
-    }
-
-    return null;
-}
-
-async function resolveIframeUrl(domain) {
-    console.log("Visiting AMP page:", domain);
-
-    const html = await fetchWithTimeout(domain);
-    if (!html) return null;
-
-    const iframeUrl = extractCurrentIframe(html);
-    console.log("Iframe URL found:", iframeUrl);
-
-    return iframeUrl;
-}
-
-function extractBaseUrls(html) {
-    const blockMatch = html.match(CONFIG_REGEX);
-    if (!blockMatch) return [];
-
-    const arrayContent = blockMatch[1];
-
-    // Extract individual URLs
-    const urls = [...arrayContent.matchAll(/https?:\/\/[^"']+/g)]
-        .map(match => match[0]);
-
-    return urls;
-}
-
-async function pickWorkingBaseUrl(baseUrls) {
-    for (const url of baseUrls) {
-
-        // Try lightweight test
-        const testUrl = url + "batutest.m3u8";
-
-        const valid = await validateStream(testUrl);
-
-        if (valid) {
-            return url;
-        }
-    }
-
-    return null;
-}
-
-async function validateStream(url) {
+async function checkDomain(index) {
+    const url = BASE_PATTERN.replace("{}", index);
     try {
-        const res = await fetch(url, {
-            method: "GET",
-            headers: {
-                "User-Agent": USER_AGENT,
-                "Referer": REFERER,
-                "Origin": REFERER
+        const res = await fetchWithTimeout(url, { headers: HEADERS, redirect: 'follow' }, 5000);
+        if (res && res.ok) return url;
+    } catch (e) {}
+    return null;
+}
+
+async function main() {
+    // Klasör yoksa oluştur
+    if (!fs.existsSync(OUTPUT_FOLDER)) {
+        fs.mkdirSync(OUTPUT_FOLDER, { recursive: true });
+    }
+
+    console.log("🔍 Andro Panel aktif domaini aranıyor (12-99 arası)...");
+
+    // 12-99 arası domainleri 2'şerli/20'şerli gruplar halinde hızlıca tara
+    let activeSite = null;
+    const indices = [];
+    for (let i = 12; i < 100; i++) indices.push(i);
+
+    const batchSize = 20;
+    for (let i = 0; i < indices.length; i += batchSize) {
+        const batch = indices.slice(i, i + batchSize);
+        const promises = batch.map(index => checkDomain(index));
+        const results = await Promise.all(promises);
+        const found = results.find(r => r !== null);
+        if (found) {
+            activeSite = found;
+            break;
+        }
+    }
+
+    if (!activeSite) {
+        console.log("❌ 12 ile 99 arasında aktif site bulunamadı.");
+        return;
+    }
+
+    console.log(`✅ Güncel domain bulundu: ${activeSite}`);
+
+    // 2. Event sayfasından sunucuları (baseurls) çek
+    const eventUrl = `${activeSite}/event.html?id=androstreamlivebs1`;
+    console.log("⚙️ Sunucu listesi çekiliyor...");
+
+    const r2 = await fetchWithTimeout(eventUrl, { headers: HEADERS }, 10000);
+    if (!r2 || !r2.ok) {
+        console.log("❌ Event sayfası alınamadı.");
+        return;
+    }
+    const h2Text = await r2.text();
+
+    const baseurlMatch = h2Text.match(/baseurls\s*=\s*\[(.*?)\]/is);
+    if (!baseurlMatch) {
+        console.log("❌ baseurls dizisi event sayfasında bulunamadı.");
+        return;
+    }
+
+    const urlsText = baseurlMatch[1].replace(/["']/g, "").replace(/[\n\r]/g, "");
+    const servers = [...new Set(urlsText.split(',').map(url => url.trim()).filter(url => url.startsWith("http")))];
+
+    if (servers.length === 0) {
+        console.log("❌ Aktif sunucu URL'si ayıklanamadı.");
+        return;
+    }
+
+    // 3. Çekilen sunuculardan çalışanını test et
+    console.log("⚡ Çalışan sunucu test ediliyor...");
+    let activeServer = null;
+    const testId = "androstreamlivebs1";
+
+    for (let server of servers) {
+        server = server.replace(/\/+$/, '');
+        let testUrl = server.includes("checklist") 
+            ? `${server}/${testId}.m3u8` 
+            : `${server}/checklist/${testId}.m3u8`;
+        testUrl = testUrl.replace("checklist//", "checklist/");
+
+        try {
+            const tempRes = await fetchWithTimeout(testUrl, {
+                headers: { 'Referer': activeSite + '/' }
+            }, 5000);
+
+            if (tempRes && tempRes.ok) {
+                activeServer = server;
+                break;
             }
-        });
-
-        if (!res.ok) {
-            console.log("Status:", res.status);
-            return false;
-        }
-
-        const text = await res.text();
-
-        // Check if it looks like real m3u8
-        if (text.includes("#EXTM3U")) {
-            return true;
-        }
-
-        return false;
-
-    } catch (err) {
-        console.log("Error validating:", err.message);
-        return false;
+        } catch (e) {}
     }
+
+    if (!activeServer) {
+        console.log("❌ Çalışan alt sunucu (m3u8 kaynağı) bulunamadı.");
+        return;
+    }
+
+    console.log(`🎯 Aktif yayın sunucusu: ${activeServer}`);
+    console.log(`📂 Dosyalar '${OUTPUT_FOLDER}' klasörüne yazılıyor...\n`);
+
+    // 4. Kanalları klasör içine kaydet
+    let count = 0;
+    for (const cid of CHANNELS) {
+        let furl = activeServer.includes("checklist")
+            ? `${activeServer}/${cid}.m3u8`
+            : `${activeServer}/checklist/${cid}.m3u8`;
+        furl = furl.replace("checklist//", "checklist/");
+
+        const fileContent = `${M3U8_HEADER}\n${furl}`;
+        const filePath = path.join(OUTPUT_FOLDER, `${cid}.m3u8`);
+        
+        fs.writeFileSync(filePath, fileContent, "utf-8");
+        count++;
+    }
+
+    console.log(`🏁 İşlem Tamamlandı! Toplam ${count} adet .m3u8 dosyası güncellendi.`);
 }
 
-async function generateStreams(baseUrl) {
-    let success = 0;
-
-    if (!fs.existsSync(OUTPUT_DIR)) {
-        fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    }
-
-    for (const file of fs.readdirSync(OUTPUT_DIR)) {
-        if (file.endsWith(".m3u8")) {
-            fs.unlinkSync(`${OUTPUT_DIR}/${file}`);
-        }
-    }
-
-    for (const stream of STREAM_SUFFIXES) {
-
-        const streamUrl = baseUrl + stream.path;
-
-        //console.log("Validating stream:", streamUrl);
-
-        /*    const valid = await validateStream(streamUrl);
- 
-            if (valid) {*/
-        success++;
-
-        const filename = `${OUTPUT_DIR}/stream_${stream.name}.m3u8`;
-
-        const content = `${M3U8_HEADER}
-${streamUrl}
-`;
-
-        fs.writeFileSync(filename, content);
-
-        /* } else {
-             streamStatus.error = "Validation failed";
-         }*/
-    }
-
-    return success;
-}
-
-(async () => {
-    const baseDomain = await resolveBaseDomain();
-    if (!baseDomain) throw new Error("Could not resolve base domain");
-    
-    const ampDomain = await resolveAmpDomain(baseDomain);
-    if (!ampDomain) throw new Error("Could not resolve AMP domain");
-
-    const iframeUrl = await resolveIframeUrl(ampDomain);
-    if (!iframeUrl) throw new Error("Iframe URL not found");
-
-    const iframeHtml = await fetchWithTimeout(iframeUrl);
-
-    const baseUrls = extractBaseUrls(iframeHtml);
-    const baseUrl = await pickWorkingBaseUrl(baseUrls);
-    console.log("Extracted baseUrl:", baseUrl);
-
-    const count = await generateStreams(baseUrl);
-    if (count === 0) throw new Error("No valid streams generated");
-
-    console.log("Done. Streams generated:", count);
-})();
+main();
